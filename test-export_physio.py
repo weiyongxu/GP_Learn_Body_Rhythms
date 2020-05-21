@@ -23,10 +23,11 @@ for subject_id in Ids:
         
         fname=op.join(MEG_data_path,subject,task+'_%d'%day+'_%02d'%subject_id+'.fif')
         
-        bio=mne.io.read_raw_fif(fname,preload=True).pick_types(meg=False,eog=False, eeg=False, ecg=True, bio=True)
+        #bio and trigger channels
+        bio=mne.io.read_raw_fif(fname,preload=True).pick_types(meg=False,eog=False, eeg=False, ecg=True, bio=True,stim=True)
         
-        df=bio.to_data_frame(index='time')
+        #downsample to 250Hz
+        df=bio.resample(250).to_data_frame(index='time')
         
-        df.to_csv(subject+'_%d'%day)
+        df.to_csv(subject+'_%d'%day+'.csv')
         
-        x
